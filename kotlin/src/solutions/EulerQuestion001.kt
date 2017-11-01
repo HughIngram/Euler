@@ -14,10 +14,11 @@ class EulerQuestion001 {
             }
             i++
         } while (i < 1000)
-        print(sum)
+        println(sum)
     }
 }
 
 fun main(args : Array<String>) {
-    EulerQuestion001().execute()
+//    EulerQuestion001().execute()
+    execute12()
 }
