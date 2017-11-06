@@ -5,7 +5,7 @@ package solutions
  */
 class EulerQuestion001 {
 
-    fun execute() {
+    fun execute(): Int {
         var sum = 0
         var i = 1
         do {
@@ -14,11 +14,7 @@ class EulerQuestion001 {
             }
             i++
         } while (i < 1000)
-        println(sum)
+        return sum
     }
 }
 
-fun main(args : Array<String>) {
-//    EulerQuestion001().execute()
-    execute12()
-}

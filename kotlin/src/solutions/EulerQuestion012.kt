@@ -22,73 +22,62 @@ We can see that 28 is the first triangle number to have over five divisors.
 
 What is the value of the first triangle number to have over five hundred divisors?
 */
-fun execute12() {
-    var index = 1
-    var triangleNumber = 1
-    while (getNumberOfDivisorsFast(triangleNumber) < 500) {
-        index++
-        triangleNumber += index
-        val primeFactors = primeFactorise(triangleNumber)
-        // what I want is a Set of Pairs: (value, count)
-//        println("$triangleNumber, $primeFactors, ${countOccurrencesOfIntegers(primeFactors)}, ${getNumberOfDivisorsFast(triangleNumber)}")
-    }
-    println(triangleNumber)
-}
-
-fun getNumberOfDivisorsFast(input: Int): Int {
-    val primeFactors = primeFactorise(input)
-    return countOccurrencesOfIntegers(primeFactors).map { it.second + 1 }.fold(1) { acc, i -> acc * i }
-}
-
-/**
- * Returns a count of each integer in the given list in the format:
- * (value, count)
- */
-fun countOccurrencesOfIntegers(integers: List<Int>): Set<Pair<Int, Int>> {
-    return integers.groupBy { it }.map { Pair(it.key, it.value.size) }.toSet()
-}
-
-// gets all the prime factors including duplicates
-fun primeFactorise(input: Int): LinkedList<Int> {
-    val primeFactors = LinkedList<Int>()
-    var currentIteration = input
-    var previousPrime = 2
-    do {
-        if (currentIteration % previousPrime == 0) {
-            primeFactors.add(previousPrime)
-            currentIteration = currentIteration / previousPrime
-        } else {
-            do {
-                previousPrime++
-            } while (!isPrime(previousPrime))
+class EulerQuestion012 {
+    fun execute12(): Int {
+        var index = 1
+        var triangleNumber = 1
+        while (getNumberOfDivisorsFast(triangleNumber) < 500) {
+            index++
+            triangleNumber += index
         }
-    } while (!isPrime(currentIteration))
-    primeFactors.add(currentIteration)
-    return primeFactors
-}
-
-fun isPrime(input: Int): Boolean {
-    var isPrime = true
-    var i = 2
-    while (i <= input / 2 && isPrime) {
-        if (input % i == 0) {
-            isPrime = false
-        }
-        i++
+        println(triangleNumber)
+        return triangleNumber
     }
-    return isPrime
-}
 
-
-// this won't do
-fun getNumberOfDivisors(input: Int): Int {
-    var i = 1
-    var numberOfDivisors = 0
-    while (i <= input / 2) {
-        if (input % i == 0) {
-            numberOfDivisors++
-        }
-        i++
+    private fun getNumberOfDivisorsFast(input: Int): Int {
+        val primeFactors = primeFactorise(input)
+        return countOccurrencesOfIntegers(primeFactors)
+                .map { it + 1 }
+                .reduce { acc, i -> acc * i}
     }
-    return numberOfDivisors
+
+    /**
+     * Returns a count of each integer in the given list in the format:
+     * (value, count)
+     */
+    private fun countOccurrencesOfIntegers(integers: List<Int>): List<Int> {
+        return integers.groupBy { it }.map { it.value.size }
+    }
+
+    // gets all the prime factors including duplicates
+    private fun primeFactorise(input: Int): LinkedList<Int> {
+        val primeFactors = LinkedList<Int>()
+        var currentIteration = input
+        var previousPrime = 2
+        do {
+            if (currentIteration % previousPrime == 0) {
+                primeFactors.add(previousPrime)
+                currentIteration /= previousPrime
+            } else {
+                do {
+                    previousPrime++
+                } while (!isPrime(previousPrime))
+            }
+        } while (!isPrime(currentIteration))
+        primeFactors.add(currentIteration)
+        return primeFactors
+    }
+
+    private fun isPrime(input: Int): Boolean {
+        var isPrime = true
+        var i = 2
+        while (i <= input / 2 && isPrime) {
+            if (input % i == 0) {
+                isPrime = false
+            }
+            i++
+        }
+        return isPrime
+    }
+
 }
